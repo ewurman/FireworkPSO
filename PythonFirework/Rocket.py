@@ -5,16 +5,29 @@ import math
 
 class Rocket:
 
-    def __init__(self, location, origin, velocity, evalFunc):
+    def __init__(self, origin, velocity, evalFunc, explodeParticles):
         #want these to be np.array type
-        self.loc = location
+        self.loc = np.array(origin)
         self.origin = origin
         self.velocity = velocity
-        self.pbest = np.array(list(origin))
+        self.pbest = np.array(origin)
+        self.pbestVal = self.evaluate()
         self.evalFunc = evalFunc
+        self.numParticles = explodeParticles
 
     def launch(self, num_steps):
-        best = self.evaluate(evalFunc)
+        self.pbestVal = self.evaluate(evalFunc)
+        for i in range(num_steps):
+            val = self.evaluate()
+            if val > self.pbestVal:
+                self.pbestVal = val
+                self.pbest = np.array(loc)
+        return None
+
+    def explode():
+        #We want to spawn particles and have them do some sort of local search
+        for i in range(self.numParticles):
+            #create particle with random direction
 
 
     def evaluate(self):
