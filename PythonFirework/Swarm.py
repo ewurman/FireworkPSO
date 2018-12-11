@@ -1,0 +1,27 @@
+import utils.py
+import numpy as np
+import Rocket.py
+
+class Swarm(object):
+	"""docstring for Swarm"""
+	def __init__(self, num_rockets, num_iterations, algorithm, annealing, dimensions):
+		super(Swarm, self).__init__()
+		self.gbest = float("inf")
+		self.rockets = [num_rockets]
+		self.num_iterations = num_iterations
+		self.func = func
+		self.algorithm = algorithm
+		self.dimensions = dimensions
+
+	def run(self):
+		if self.algorithm == 1:
+			run_rotating()
+		else
+			run_recursive()
+
+	def run_rotating(self):
+		o_min, o_max = utils.loc_min_max(self.algorithm)
+		origin = np.random.uniform(o_min,o_max,dimensions)
+
+		for i in range(num_rockets):
+			
