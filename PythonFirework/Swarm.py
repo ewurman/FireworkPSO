@@ -1,5 +1,6 @@
 import utils.py
 import numpy as np
+import Rocket.py
 
 class Swarm(object):
 	"""docstring for Swarm"""
@@ -19,4 +20,8 @@ class Swarm(object):
 			run_recursive()
 
 	def run_rotating(self):
-		origin = np.random.uniform()
+		o_min, o_max = utils.loc_min_max(self.algorithm)
+		origin = np.random.uniform(o_min,o_max,dimensions)
+
+		for i in range(num_rockets):
+			

@@ -1,9 +1,63 @@
+import utils
+import numpy as np
+import math
 
 
 class Rocket:
 
-    def __init__(self, location, origin, velocity):
+    def __init__(self, location, origin, velocity, evalFunc):
+        #want these to be np.array type
         self.loc = location
         self.origin = origin
         self.velocity = velocity
-        self.pbest = list(origin)
+        self.pbest = np.array(list(origin))
+        self.evalFunc = evalFunc
+
+    def launch(self, num_steps):
+        best = self.evaluate(evalFunc)
+
+
+    def evaluate(self):
+        if self.evalFunc == Function.Sphere:
+            return evaluateSphere()
+
+        elif self.evalFunc == Function.Ackley:
+            return evaluateAckley()
+            
+        elif self.evalFunc == Function.Rosenbrock:
+            return evaluateRosenbrock()
+
+        elif self.evalFunc == Function.Rastrigin:
+            return evaluateRastrigin()
+
+
+    def evaluateSphere(self):
+        return np.sum(self.loc * self.loc)
+
+    def evaluateAckley(self):
+        firstSum = 0
+        secondSum = 0
+        dimensions = self.loc.size
+        for i in range(dimensions):
+            firstSum += self.loc[i]*self.loc[i];
+            secondSum += cos(2 * math.pi * pos[i]);
+    
+        #-20.0 * exp(-0.2*sqrt(firstSum / (double)dimensions)) - exp(secondSum / (double) dimensions) + 20 + M_E;
+        return -20.0 * math.exp(-0.2* math.sqrt(firstSum/dimensions)) - exp(secondSum / dimensions) + 20 + math.e
+
+    def evaluateRosenbrock(self):
+        total = 0
+        dimensions = self.loc.size
+        for i in range(dimensions - 1):
+            #total += 100*(pos[i+1] - pos[i]*pos[i])*(pos[i+1] - pos[i]*pos[i]) + (pos[i] - 1)*(pos[i] - 1);
+            total += 100*(self.loc[i+1] - self.loc[i]*self.loc[i])*(self.loc[i+1] - self.loc[i]*self.loc[i]) + (self.loc[i] - 1)*(self.loc[i] - 1)
+        return total
+
+    def evaluateRastrigin(self):        
+        dimensions = self.loc.size
+        fitness = 10 * dimensions
+        for i in range(dimensions):
+            #fitness += pos[i]*pos[i] - (10 * cos(2 * M_PI * pos[i]));
+            fitness += self.loc[i]*self.loc[i] - (10 * math.cos(2 * math.pi * self.loc[i]))
+        return fitness
+

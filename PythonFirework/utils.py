@@ -18,3 +18,9 @@ def vel_min_max(func):
 		return -2.0,2.0
 	elif func == 4: #ras
 		return -2.0,4.0
+
+class Function(IntEnum):
+    Sphere = 1
+    Ackley = 2
+    Rosenbrock = 3
+    Rastrigin = 4
