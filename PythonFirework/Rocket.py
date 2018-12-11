@@ -1,6 +1,7 @@
 import utils
 import numpy as np
 import math
+import Particle
 
 
 class Rocket:
@@ -27,7 +28,8 @@ class Rocket:
     def explode():
         #We want to spawn particles and have them do some sort of local search
         for i in range(self.numParticles):
-            #create particle with random direction
+            #create particle with random direction starting at pbest.
+            #TODO
 
 
     def evaluate(self):
