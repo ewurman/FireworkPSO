@@ -16,14 +16,19 @@ class Rocket:
         self.pbestVal = self.evaluate()
 
 
-    def launch(self, num_steps):
-        print("##############################", self.evalFunc)
+    def launch(self, num_steps, x, y, z):
         self.pbestVal = self.evaluate()
         for i in range(num_steps):
             val = self.evaluate()
             if val > self.pbestVal:
                 self.pbestVal = val
                 self.pbest = np.array(loc)
+
+
+            if self.loc.size == 2:
+                x.append(self.loc[0])
+                y.append(self.loc[1])
+                z.append(val)
             np.add(self.loc, self.velocity)
 
         return None
@@ -37,6 +42,7 @@ class Rocket:
 
     def evaluate(self):
         if self.evalFunc == utils.Function.Sphere:
+            val = self.eva
             return self.evaluateSphere()
 
         elif self.evalFunc == utils.Function.Ackley:
