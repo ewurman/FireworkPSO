@@ -19,6 +19,17 @@ def fadeColor(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) 
 
 def plot_all_points(x,y,evals):
 
+    def init():
+        pathcol.set_offsets([[], []])
+        return [pathcol]
+
+    def update(i, pathcol, y, particles):
+        pathcol.set_offsets(particles[:i])
+        pathcol.set_color(y[:i])
+        return [pathcol]
+
+    upperbound = max(evals)
+
     frames = len(x)
     particles = list(zip(x,y))
 
@@ -28,24 +39,13 @@ def plot_all_points(x,y,evals):
     c2='#2ca02c' #green
     colors = []
 
-    for z in y:
-        print(z/10)
-        col = fadeColor(c1,c2,z/10)
-        print(col)
+    for val in y:
+        col = fadeColor(c1,c2,val/upperbound)
         colors.append(col)
 
     print(particles)
-    thiss = input("sdohjf")
-    x, y = np.array([]), np.array([])
 
-    def init():
-        pathcol.set_offsets([[], []])
-        return [pathcol]
-
-    def update(i, pathcol, y, particles):
-        pathcol.set_offsets(particles[:i])
-        pathcol.set_color(y[:i])
-        return [pathcol]
+    #x, y = np.array([]), np.array([])
 
     fig = plt.figure()
     xs, ys = zip(*particles)
@@ -61,6 +61,6 @@ def plot_all_points(x,y,evals):
 
 
 
-x = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
-y = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
-plot_all_points(x,y,y)
+# x = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
+# y = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
+# plot_all_points(x,y,y)
