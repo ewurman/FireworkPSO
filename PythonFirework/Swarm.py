@@ -34,7 +34,7 @@ class Swarm(object):
             self.run_rotating(origin)
         else:
 
-            self.run_recursive(origin, self.num_iterations)  
+            self.run_recursive(origin, self.num_iterations, self.num_iterations)  
 
 
 
@@ -68,18 +68,18 @@ class Swarm(object):
         if iterations_left == 0:
             return
 
-        if len(rockets) == 0:
+        if len(self.rockets) == 0:
             # first run through, build rockets
             for i in range(self.num_rockets):
                 v_min, v_max = utils.vel_min_max(self.func)
                 velocity = np.random.uniform(v_min, v_max, self.dimensions)
-                new_rocket = Rocket(origin, velocity, self.func, self.explode, self.numSparks)
+                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.numSparks)
                 self.rockets.append(new_rocket)
-
+        # EndIf
 
         # Now we launch and record data
         rbestValLocs = []
-        for rocket in rockets:
+        for rocket in self.rockets:
             rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
             if rbestVal < self.gbest:
                 self.gbest = rbestVal
@@ -103,7 +103,7 @@ class Swarm(object):
                 next_id += 1
 
         self.rockets = new_rockets
-        return run_recursive(origin, iterations_left - 1, total_iterations)
+        return self.run_recursive(origin, iterations_left - 1, total_iterations)
 
         
 
