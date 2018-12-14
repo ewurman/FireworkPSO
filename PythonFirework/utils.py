@@ -1,5 +1,5 @@
 
-
+import math
 from enum import IntEnum
 
 def loc_min_max(func):

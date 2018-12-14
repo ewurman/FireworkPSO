@@ -1,7 +1,7 @@
 import numpy as np
 import utils
 import random
-
+import math
 
 CONSTRICTION_FACTOR = 0.7298;
 TOWARD_PBEST = 2.05;
@@ -24,18 +24,13 @@ class Spark:
         '''
         This is currently implemented as global PSO for a time step
         '''
-        
         # position update
-        print("HITHERE")
-        np.add(self.loc, self.velocity)
+        self.loc =np.add(self.loc, self.velocity)
 
         fitness = self.evaluate()
-
-        x.append(self.loc[0])
-        y.append(self.loc[1])
-        z.append(fitness)
-
-        print(x, y, z)
+        # x.append(self.loc[0])
+        # y.append(self.loc[1])
+        # z.append(fitness)
 
         if fitness < self.pbestVal:
             self.pbestVal = fitness
