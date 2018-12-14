@@ -50,6 +50,8 @@ class Swarm(object):
             print(self.Z)
             self.plot_and_anim()
 
+
+
     def run_rotating(self, origin):
         print("RUNNING ROTATING")
         for i in range(self.num_rockets):
@@ -60,21 +62,22 @@ class Swarm(object):
             thiss = input("Hold")
             self.rockets.append(new_rocket)
 
-        ###### LOCAL SEARCH?? #######
 
         for i in range(self.num_iterations):
-            if i + 1 != self.num_iterations:
-                self.rockets[i].launch(self.steps, self.X, self.Y, self.Z)
-                self.rockets[i].velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-                self.rockets[i].origin = self.rockets[i].pbest  
+            new_rockets = []
+            for rocket in rockets:
+                if i + 1 != self.num_iterations:
+                    rbestLoc = rocket.launch(self.steps, self.X, self.Y, self.Z)
+                    new_velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * (1.25 / self.steps) #reduce velocity step size
+                    new_rocket = rocket.spawnNewRocket(new_velocity, rbestLoc, rocket.id)
+                    new_rockets.append(new_rocket)
 
-                ### Not sure this is the best way to respawn rockets ###
-
-            else:
-                self.rockets[i].launch(self.steps, self.X, self.Y, self.Z )
-                self.rockets[i].velocity = np.subtract(self.rockets[0].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-                self.rockets[i].origin = self.rockets[i].pbest
-
+                else:
+                    rbestLoc = rocket.launch(self.steps, self.X, self.Y, self.Z)
+                    new_velocity = np.subtract(self.rockets[0].pbest, self.rockets[i].pbest)  * (1.25 / self.steps) #reduce velocity step size
+                    new_rocket = rocket.spawnNewRocket(new_velocity, rbestLoc, rocket.id)
+                    new_rockets.append(new_rocket)
+            self.rockets = new_rockets
 
 
     def run_recursive(self, origin, iterations_left):
