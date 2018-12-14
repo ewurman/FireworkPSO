@@ -1,3 +1,5 @@
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -45,6 +47,5 @@ plt.show()
 """
 #(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, explodeParticles, plot)
 
-swarm = Swarm.Swarm(2,2,2,1,1,3,1,1,2)
-
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=1, num_steps=5, algorithm=1, annealing=0, dimensions=2, explodeParticles=0, func=1, plot=1)
 swarm.run()

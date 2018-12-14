@@ -1,3 +1,4 @@
+
 import utils
 import numpy as np
 import math
@@ -8,7 +9,9 @@ SPARK_LIFESPAN = 20
 class Rocket:
 
     def __init__(self, origin, velocity, evalFunc, numSparks):
+
         #want these to be np.array type
+        self.id = ID
         self.loc = np.array(origin)
         self.origin = origin
         self.velocity = velocity
@@ -18,16 +21,25 @@ class Rocket:
         self.pbestVal = self.evaluate()
         self.sparks = []
 
+        
+    def printroc(self):
+        print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
-    def launch(self, num_steps):
-        print("##############################", self.evalFunc)
+    def launch(self, num_steps, x, y, z):
         self.pbestVal = self.evaluate()
         for i in range(num_steps):
             val = self.evaluate()
             if val > self.pbestVal:
                 self.pbestVal = val
-                self.pbest = np.array(loc)
-            np.add(self.loc, self.velocity)
+                self.pbest = np.array(self.loc)
+
+
+            if self.loc.size == 2:
+                x.append(self.loc[0])
+                y.append(self.loc[1])
+                z.append(val)
+
+            self.loc = np.add(self.loc, self.velocity)
 
 
         # now we are at the end of launch
@@ -113,9 +125,5 @@ class Rocket:
                 rbestVal = spark.pbestVal
                 rbestLoc = np.array(spark.pbest)
         return rbestLoc #np.array type
-
-
-
-
 
 
