@@ -21,7 +21,7 @@ def plot_all_points(x,y,evals):
 
     def init():
         pathcol.set_offsets([[], []])
-        ax.axis([0, 50, 0, 50])
+        ax.axis([0, 100, 0, 100])
         return [pathcol]
 
     def update(i, pathcol, y, particles):
@@ -54,7 +54,7 @@ def plot_all_points(x,y,evals):
     pathcol = plt.scatter([], [], c=[], s=5)
 
     anim = animation.FuncAnimation(
-        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=100, frames=frames, 
+        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=500, frames=frames, 
         blit=True, repeat=False)
     plt.show()
 

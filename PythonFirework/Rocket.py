@@ -8,7 +8,7 @@ SPARK_LIFESPAN = 20
 
 class Rocket:
 
-    def __init__(self, ID, origin, velocity, evalFunc, numSparks):
+    def __init__(self, ID, origin, velocity, evalFunc, dimensions, numSparks):
 
         #want these to be np.array type
         self.id = ID
@@ -20,12 +20,13 @@ class Rocket:
         self.numSparks = numSparks
         self.pbestVal = self.evaluate()
         self.sparks = []
+        self.dimensions = dimensions
 
         
     def printroc(self):
         print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
-    def launch(self, num_steps, x=[], y=[], z=[], returnValues = 0):
+    def launch(self, num_steps, x, y, z, returnValues = 0):
         self.pbestVal = self.evaluate()
         for i in range(num_steps):
             val = self.evaluate()
@@ -66,21 +67,17 @@ class Rocket:
             ### TODO: talk to ian about starting velocitiies ####
 
             randomVelocity =  np.random.uniform(v_min, v_max, self.dimensions)
-            spark = Spark(self.pbest, randomVelocity, self)
+            spark = Spark.Spark(self.pbest, randomVelocity, self)
             #create particle with random direction starting at pbest.
             self.sparks.append(spark)
 
         for i in range(SPARK_LIFESPAN):
-            print(":OSDFJLLDKSJF:LSDJKF")
-
             for spark in self.sparks:
                 spark.localSearchUpdate(x, y, z)
 
-        return None
-
 
     def spawnNewRocket(self, new_velocity, new_origin, new_id):
-        rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.numSparks)
+        rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.dimensions, self.numSparks)
         return rocket
 
 
