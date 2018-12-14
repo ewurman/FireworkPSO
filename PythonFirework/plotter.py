@@ -18,7 +18,7 @@ def fadeColor(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) 
     #print(rgb1, rgb2, rgb, cOld, c)
     return c
 
-def plot_all_points(x,y,evals):
+def plot_all_points(x,y,evals,numsteps):
 
     def init():
         pathcol.set_offsets([[], []])
@@ -26,8 +26,8 @@ def plot_all_points(x,y,evals):
         return [pathcol]
 
     def update(i, pathcol, y, particles):
-        if i % 10 == 0:
-            playsound('audio.mp3')
+        if i % numsteps == 0 and i !=0:
+            playsound('pop.mp3')
 
         pathcol.set_offsets(particles[:i])
         pathcol.set_color(y[:i])

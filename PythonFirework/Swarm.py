@@ -1,4 +1,3 @@
-import tester
 import utils
 import plotter
 import numpy as np
@@ -113,7 +112,5 @@ class Swarm(object):
 
 
     def plot_history(self):
-        plotter.plot_all_points(self.X, self.Y, self.Z)
+        plotter.plot_all_points(self.X, self.Y, self.Z, self.steps)
 
-    def plot_thing(self):
-        tester.test(self.X, self.Y, self.Z)
