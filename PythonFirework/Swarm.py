@@ -22,7 +22,7 @@ class Swarm(object):
         if self.algorithm == 1:
             self.run_rotating()
         else:
-            o_min, o_max = utils.loc_min_max(self.algorithm)
+            o_min, o_max = utils.loc_min_max(self.algorithm)  ####### why algorithm and not evaluation function? ######
             origin = np.random.uniform(o_min, o_max, self.dimensions)
             self.run_recursive(origin, self.num_iterations)
 
@@ -42,7 +42,10 @@ class Swarm(object):
             if i + 1 != self.num_iterations:
                 self.rockets[i].launch(self.steps)
                 self.rockets[i].velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-                self.rockets[i].origin = self.rockets[i].pbest
+                self.rockets[i].origin = self.rockets[i].pbest  
+
+                ### Not sure this is the best way to respawn rockets ###
+
             else:
                 self.rockets[i].launch(self.steps)
                 self.rockets[i].velocity = np.subtract(self.rockets[0].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size

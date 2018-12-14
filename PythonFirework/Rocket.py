@@ -1,19 +1,22 @@
 import utils
 import numpy as np
 import math
+import Spark
 
+SPARK_LIFESPAN = 20
 
 class Rocket:
 
-    def __init__(self, origin, velocity, evalFunc, explodeParticles):
+    def __init__(self, origin, velocity, evalFunc, numSparks):
         #want these to be np.array type
         self.loc = np.array(origin)
         self.origin = origin
         self.velocity = velocity
         self.pbest = np.array(origin)
         self.evalFunc = evalFunc
-        self.numParticles = explodeParticles
+        self.numSparks = numSparks
         self.pbestVal = self.evaluate()
+        self.sparks = []
 
 
     def launch(self, num_steps):
@@ -26,14 +29,37 @@ class Rocket:
                 self.pbest = np.array(loc)
             np.add(self.loc, self.velocity)
 
+
+        # now we are at the end of launch
+        self.explode()
+        # Explode performs local search, we should now either update the rocket's pbest to getRBestSparkLocation() 
+        #   and remove the sparks with self.sparks = []
+        #  or 
+        # We return the location and Swarm.py takes care of spawning new rockets at those rbests 
         return None
+
 
     def explode(self):
         #We want to spawn particles and have them do some sort of local search
         for i in range(self.numParticles):
-            return None
+
             #create particle with random direction starting at pbest.
-            #TODO
+            v_min, v_max = utils.vel_min_max(self.evalFunc)
+
+            ### TODO: talk to ian about starting velocitiies ####
+
+            randomVelocity =  np.random.uniform(v_min, v_max, self.dimensions)
+            spark = Spark(self.pbest, randomVelocity, self)
+            #create particle with random direction starting at pbest.
+            self.sparks.append(spark)
+
+        for i in range(SPARK_LIFESPAN):
+            for spark in sparks:
+                spark.localSearchUpdate()
+
+        return None
+
+
 
     def evaluate(self):
         if self.evalFunc == utils.Function.Sphere:
@@ -78,3 +104,18 @@ class Rocket:
             #fitness += pos[i]*pos[i] - (10 * cos(2 * M_PI * pos[i]));
             fitness += self.loc[i]*self.loc[i] - (10 * math.cos(2 * math.pi * self.loc[i]))
         return fitness
+
+    def getRBestSparkLocation(self):
+        rbestLoc = np.array(self.pbest)
+        rbestVal = self.pbestVal
+        for spark in self.sparks:
+            if spark.pbestVal < rbestVal:
+                rbestVal = spark.pbestVal
+                rbestLoc = np.array(spark.pbest)
+        return rbestLoc #np.array type
+
+
+
+
+
+
