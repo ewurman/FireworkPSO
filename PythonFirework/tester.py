@@ -1,116 +1,77 @@
-# import numpy as np
-# import matplotlib.pyplot as plt
-# from matplotlib.animation import FuncAnimation
-
-# X = [1,2,3,4,5,6,7,8,9,0]
-# Y = [1,2,3,4,5,6,7,8,9,0]
-# Z = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0]
-
-
-# fig, ax = plt.subplots()
-# xdata, ydata, zdata = [], [], []
-# scat, = plt.scatter(xdata, ydata, zdata)
-# plt.set_cmap('hot')
-
-# def init():
-#     ax.set_xlim(-10, 10)
-#     ax.set_ylim(-10, 10)
-#     return ln,
-
-# def update(frame):
-#     xdata.append(X[frame])
-#     ydata.append(Y[frame])
-#     zdata.append(Z[frame])
-#     ln.set_data(xdata, ydata)
-#     scat.set_color(zdata)
-#     return scat,
-
-# ani = FuncAnimation(fig, update, init_func=init, blit=True)
-# plt.show() 
-
-
-
-
-import matplotlib.pyplot as plt
-
-xyc = range(20)
-
-print(xyc)
-
-plt.subplot(121)
-plt.scatter(xyc[:13], xyc[:13], c=xyc[:13], s=35, vmin=0, vmax=20)
-plt.colorbar()
-plt.xlim(0, 20)
-plt.ylim(0, 20)
-
-plt.subplot(122)
-plt.scatter(xyc[8:20], xyc[8:20], c=xyc[8:20], s=35, vmin=0, vmax=20)   
-plt.colorbar()
-plt.xlim(0, 20)
-plt.ylim(0, 20)
-
-plt.show()
-
-
-
-
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import matplotlib.animation as animation
+import matplotlib as mpl
+
+# test = np.random.uniform(0.0,1.0,(10,4))
+# print(test)
+
+def fadeColor(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
+    assert len(c1)==len(c2)
+    assert mix>=0 and mix<=1, 'mix='+str(mix)
+    rgb1=np.array([int(c1[ii:ii+2],16) for ii in range(1,len(c1),2)])
+    rgb2=np.array([int(c2[ii:ii+2],16) for ii in range(1,len(c2),2)])   
+    rgb=((1-mix)*rgb1+mix*rgb2).astype(int)
+    #cOld='#'+''.join([hex(a)[2:] for a in rgb])
+    #print(11,[hex(a)[2:].zfill(2) for a in rgb])
+    c='#'+('{:}'*3).format(*[hex(a)[2:].zfill(2) for a in rgb])
+    #print(rgb1, rgb2, rgb, cOld, c)
+    return c
+
+def plot_all_points(x,y,evals):
+
+    frames = len(x)
+    particles = list(zip(x,y))
 
 
-# Create new Figure and an Axes which fills it.
-fig = plt.figure(figsize=(7, 7))
-ax = fig.add_axes([0, 0, 1, 1], frameon=False)
-ax.set_xlim(0, 1), ax.set_xticks([])
-ax.set_ylim(0, 1), ax.set_yticks([])
 
-# Create rain data
-n_drops = 50
-rain_drops = np.zeros(n_drops, dtype=[('position', float, 2),
-                                      ('size',     float, 1),
-                                      ('growth',   float, 1),
-                                      ('color',    float, 4)])
+    # '#001dff' #blue
+    # '#ff0000' #red
+    c1='#1f77b4' #blue
+    c2='#2ca02c' #green
+    colors = []
 
-# Initialize the raindrops in random positions and with
-# random growth rates.
-rain_drops['position'] = np.random.uniform(0, 1, (n_drops, 2))
-rain_drops['growth'] = np.random.uniform(50, 200, n_drops)
+    for z in y:
+        print(z/10)
+        col = fadeColor(c1,c2,z/10)
+        print(col)
+        colors.append(col)
 
-# Construct the scatter which we will update during animation
-# as the raindrops develop.
-scat = ax.scatter(rain_drops['position'][:, 0], rain_drops['position'][:, 1],
-                  s=rain_drops['size'], lw=0.5, edgecolors=rain_drops['color'],
-                  facecolors='none')
+    print(particles)
+    thiss = input("sdohjf")
+    x, y = np.array([]), np.array([])
 
+    def init():
+        pathcol.set_offsets([[], []])
+        return [pathcol]
 
-def update(frame_number):
-    # Get an index which we can use to re-spawn the oldest raindrop.
-    current_index = frame_number % n_drops
+    def update(i, pathcol, y, particles):
+        pathcol.set_offsets(particles[:i])
+        pathcol.set_color(y[:i])
+        return [pathcol]
 
-    # Make all colors more transparent as time progresses.
-    rain_drops['color'][:, 3] -= 1.0/len(rain_drops)
-    rain_drops['color'][:, 3] = np.clip(rain_drops['color'][:, 3], 0, 1)
-    print(len(rain_drops['color']))
+    fig = plt.figure()
+    xs, ys = zip(*particles)
+    xmin, xmax = min(xs), max(xs)
+    ymin, ymax = min(ys), max(ys)
+    ax = plt.axes(xlim=(xmin, xmax), ylim=(ymin, ymax))
+    pathcol = plt.scatter([], [], c=[], s=100)
 
-    # Make all circles bigger.
-    rain_drops['size'] += rain_drops['growth']
+    cmap = mpl.cm.cool
+    norm = mpl.colors.Normalize(vmin=5, vmax=10)
 
-    # Pick a new position for oldest rain drop, resetting its size,
-    # color and growth factor.
-    rain_drops['position'][current_index] = np.random.uniform(0, 1, 2)
-    rain_drops['size'][current_index] = 5
-    rain_drops['color'][current_index] = (0, 0, 0, 1)
-    rain_drops['growth'][current_index] = np.random.uniform(50, 200)
-
-    # Update the scatter collection, with the new colors, sizes and positions.
-    scat.set_edgecolors(rain_drops['color'])
-    scat.set_sizes(rain_drops['size'])
-    scat.set_offsets(rain_drops['position'])
+    cb1 = mpl.colorbar.ColorbarBase(ax, cmap=cmap,
+                                norm=norm,
+                                orientation='horizontal')
 
 
-# Construct the animation, using the update function as the animation
-# director.
-animation = FuncAnimation(fig, update, interval=10)
-plt.show()
+    anim = animation.FuncAnimation(
+        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=500, frames=frames, 
+        blit=True, repeat=False)
+    plt.show()
 
+
+
+x = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
+y = [0.0,1.,2.,3.,4.,5.,6.,7.,8.,9.]
+plot_all_points(x,y,y)
