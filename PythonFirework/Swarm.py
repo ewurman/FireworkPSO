@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation
 
 class Swarm(object):
     """docstring for Swarm"""
-    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, explodeParticles, func, plot):
+    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, numSparks, func, plot):
         super(Swarm, self).__init__()
         self.gbest = float("inf")
         self.num_rockets = num_rockets
@@ -18,7 +18,7 @@ class Swarm(object):
         self.func = func
         self.algorithm = algorithm
         self.dimensions = dimensions
-        self.explode = explodeParticles
+        self.numSparks = numSparks
         self.steps = num_steps
         self.plotref = plot
         self.X = []
@@ -43,7 +43,7 @@ class Swarm(object):
         for i in range(self.num_rockets):
             v_min, v_max = utils.vel_min_max(self.func)
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
-            new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.explode)
+            new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.explode, self.numSparks)
             new_rocket.printroc()
             self.rockets.append(new_rocket)
 
@@ -66,26 +66,30 @@ class Swarm(object):
 
 
     def run_recursive(self, origin, iterations_left):
-        if iterations_left
+        if iterations_left == 0:
+            return
 
         if len(rockets) == 0:
             # first run through
             for i in range(self.num_rockets):
                 v_min, v_max = utils.vel_min_max(self.func)
                 velocity = np.random.uniform(v_min, v_max, self.dimensions)
-                new_rocket = Rocket(origin, velocity, self.func, self.explode)
+                new_rocket = Rocket(origin, velocity, self.func, self.explode, self.numSparks)
                 self.rockets.append(new_rocket)
+
+            for rocket in rockets:
+                rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
+                if rbestVal < self.gbest:
+                    self.gbest = rbestVal
 
 
 
         else:
-        
-
-        for i in range(self.num_iterations):
-            for rocket in rockets:
-                self.rockets[i].launch(self.steps)
-                self.rockets[i].velocity = np.subtract(rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-                self.rockets[i].origin = self.rockets[i].pbest
+            
+                for rocket in rockets:
+                    self.rockets[i].launch(self.steps)
+                    self.rockets[i].velocity = np.subtract(rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
+                    self.rockets[i].origin = self.rockets[i].pbest
 
 
 

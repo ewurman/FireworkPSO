@@ -25,7 +25,7 @@ class Rocket:
     def printroc(self):
         print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
-    def launch(self, num_steps, x=[], y=[], z=[]):
+    def launch(self, num_steps, x=[], y=[], z=[], returnValues = 0):
         self.pbestVal = self.evaluate()
         for i in range(num_steps):
             val = self.evaluate()
@@ -48,7 +48,12 @@ class Rocket:
         #   and remove the sparks with self.sparks = []
         #  or 
         # We return the location and Swarm.py takes care of spawning new rockets at those rbests 
-        return self.getRBestSparkLocation()
+        if returnValues == 0:
+            return self.getRBestSparkLocation()
+        elif returnValues == 1:
+            return self.getRBestSparkValue()
+        else:
+            return self.getRBestSparkLocationAndValue()
 
 
     def explode(self):
@@ -132,3 +137,18 @@ class Rocket:
         return rbestLoc #np.array type
 
 
+    def getRBestSparkValue(self):
+        rbestVal = self.pbestVal
+        for spark in self.sparks:
+            if spark.pbestVal < rbestVal:
+                rbestVal = spark.pbestVal
+        return rbestVal #np.array type
+
+    def getRBestSparkLocationAndValue(self):
+        rbestLoc = np.array(self.pbest)
+        rbestVal = self.pbestVal
+        for spark in self.sparks:
+            if spark.pbestVal < rbestVal:
+                rbestVal = spark.pbestVal
+                rbestLoc = np.array(spark.pbest)
+        return (rbestLoc, rbestVal) #np.array type
