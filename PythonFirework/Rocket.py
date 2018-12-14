@@ -8,7 +8,7 @@ SPARK_LIFESPAN = 20
 
 class Rocket:
 
-    def __init__(self, origin, velocity, evalFunc, numSparks):
+    def __init__(self, ID, origin, velocity, evalFunc, numSparks):
 
         #want these to be np.array type
         self.id = ID
@@ -48,7 +48,7 @@ class Rocket:
         #   and remove the sparks with self.sparks = []
         #  or 
         # We return the location and Swarm.py takes care of spawning new rockets at those rbests 
-        return None
+        return self.getRBestSparkLocation()
 
 
     def explode(self):
@@ -70,6 +70,11 @@ class Rocket:
                 spark.localSearchUpdate()
 
         return None
+        
+
+    def spawnNewRocket(self, new_velocity, new_origin, new_id):
+        rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.numSparks)
+        return rocket
 
 
 
