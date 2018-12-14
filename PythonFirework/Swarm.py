@@ -26,7 +26,8 @@ class Swarm(object):
         self.Z = []
 
     def run(self):
-        o_min, o_max = utils.loc_min_max(self.algorithm)  ####### why algorithm and not evaluation function? ######
+
+        o_min, o_max = utils.loc_min_max(self.func)
         origin = np.random.uniform(o_min, o_max, self.dimensions)
 
         if self.algorithm == 1:
@@ -39,7 +40,7 @@ class Swarm(object):
 
     def run_rotating(self, origin):
         for i in range(self.num_rockets):
-            v_min, v_max = utils.vel_min_max(self.algorithm)
+            v_min, v_max = utils.vel_min_max(self.func)
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
             new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.explode)
             self.rockets.append(new_rocket)
@@ -63,19 +64,30 @@ class Swarm(object):
 
 
     def run_recursive(self, origin, iterations_left):
+        if iterations_left
 
-        for i in range(self.num_rockets):
-            v_min, v_max = utils.vel_min_max(self.algorithm)
-            velocity = np.random.uniform(v_min, v_max, self.dimensions)
-            new_rocket = Rocket(origin, velocity, self.func, self.explode)
-            self.rockets.append(new_rocket)
+        if len(rockets) == 0:
+            # first run through
+            for i in range(self.num_rockets):
+                v_min, v_max = utils.vel_min_max(self.func)
+                velocity = np.random.uniform(v_min, v_max, self.dimensions)
+                new_rocket = Rocket(origin, velocity, self.func, self.explode)
+                self.rockets.append(new_rocket)
 
-        ###### LOCAL SEARCH?? #######
+
+
+        else:
+        
 
         for i in range(self.num_iterations):
-            self.rockets[i].launch(self.steps)
-            self.rockets[i].velocity = np.subtract(rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-            self.rockets[i].origin = self.rockets[i].pbest
+            for rocket in rockets:
+                self.rockets[i].launch(self.steps)
+                self.rockets[i].velocity = np.subtract(rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
+                self.rockets[i].origin = self.rockets[i].pbest
+
+
+
+
 
 
     def plot_history(self):

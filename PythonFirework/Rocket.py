@@ -25,7 +25,7 @@ class Rocket:
     def printroc(self):
         print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
-    def launch(self, num_steps, x, y, z):
+    def launch(self, num_steps, x=[], y=[], z=[]):
         self.pbestVal = self.evaluate()
         for i in range(num_steps):
             val = self.evaluate()
@@ -72,7 +72,7 @@ class Rocket:
                 spark.localSearchUpdate(x, y, z)
 
         return None
-        
+
 
     def spawnNewRocket(self, new_velocity, new_origin, new_id):
         rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.numSparks)
