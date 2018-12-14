@@ -21,7 +21,7 @@ def plot_all_points(x,y,evals):
 
     def init():
         pathcol.set_offsets([[], []])
-        ax.axis([0, 100, 0, 100])
+        ax.axis([0, 50, 0, 50])
         return [pathcol]
 
     def update(i, pathcol, y, particles):
