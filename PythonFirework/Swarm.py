@@ -39,7 +39,6 @@ class Swarm(object):
 
 
     def run_rotating(self, origin):
-        print("RUNNING ROTATING")
         for i in range(self.num_rockets):
             v_min, v_max = utils.vel_min_max(self.func)
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
@@ -97,5 +96,5 @@ class Swarm(object):
 
 
     def plot_history(self):
-        plot2.plot_all_points(self.X, self.Y, self.Z)
+        test2.plot_all_points(self.X, self.Y, self.Z)
         
