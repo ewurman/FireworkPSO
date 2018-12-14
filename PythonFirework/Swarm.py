@@ -96,7 +96,7 @@ class Swarm(object):
             for i in range(numSpawn):
                 v_min, v_max = utils.vel_min_max(self.func)
 
-                #TODO: lower v_min and max ranges to encourage convergence
+                
                 velocity = np.random.uniform(v_min, v_max, self.dimensions) * (iterations_left / total_iterations)
                 new_rocket = rocket.spawnNewRocket(velocity, rbestLoc, next_id)
                 new_rockets.append(new_rocket)
