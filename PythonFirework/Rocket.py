@@ -1,3 +1,4 @@
+
 import utils
 import numpy as np
 import math
@@ -5,8 +6,9 @@ import math
 
 class Rocket:
 
-    def __init__(self, origin, velocity, evalFunc, explodeParticles):
+    def __init__(self, ID, origin, velocity, evalFunc, explodeParticles):
         #want these to be np.array type
+        self.id = ID
         self.loc = np.array(origin)
         self.origin = origin
         self.velocity = velocity
@@ -15,6 +17,9 @@ class Rocket:
         self.numParticles = explodeParticles
         self.pbestVal = self.evaluate()
 
+        
+    def printroc(self):
+        print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
     def launch(self, num_steps, x, y, z):
         self.pbestVal = self.evaluate()
@@ -22,14 +27,15 @@ class Rocket:
             val = self.evaluate()
             if val > self.pbestVal:
                 self.pbestVal = val
-                self.pbest = np.array(loc)
+                self.pbest = np.array(self.loc)
 
 
             if self.loc.size == 2:
                 x.append(self.loc[0])
                 y.append(self.loc[1])
                 z.append(val)
-            np.add(self.loc, self.velocity)
+
+            self.loc = np.add(self.loc, self.velocity)
 
         return None
 
@@ -42,7 +48,6 @@ class Rocket:
 
     def evaluate(self):
         if self.evalFunc == utils.Function.Sphere:
-            val = self.eva
             return self.evaluateSphere()
 
         elif self.evalFunc == utils.Function.Ackley:

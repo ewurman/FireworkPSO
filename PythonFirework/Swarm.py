@@ -1,6 +1,9 @@
+
 import utils
 import numpy as np
 import Rocket
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 
 class Swarm(object):
@@ -22,27 +25,33 @@ class Swarm(object):
         self.Z = []
 
     def run(self):
-        
+        print("RUNNING")
 
+        ##ORIGIN WORKING
+        o_min, o_max = utils.loc_min_max(self.algorithm)
+        print("OMIN, OMAX = ", o_min, o_max)
+        origin = np.random.uniform(o_min, o_max, self.dimensions)
+        print("Origin = ", origin)
+        
         if self.algorithm == 1:
-            self.run_rotating()
+            self.run_rotating(origin)
         else:
-            o_min, o_max = utils.loc_min_max(self.algorithm)
-            origin = np.random.uniform(o_min, o_max, self.dimensions)
             self.run_recursive(origin, self.num_iterations)
+            
+        if self.dimensions == 2:    
             print(self.X)
             print(self.Y)
             print(self.Z)
             self.plot_and_anim()
 
-    def run_rotating(self):
-        o_min, o_max = utils.loc_min_max(self.algorithm)
-        origin = np.random.uniform(o_min, o_max, self.dimensions)
-
+    def run_rotating(self, origin):
+        print("RUNNING ROTATING")
         for i in range(self.num_rockets):
             v_min, v_max = utils.vel_min_max(self.algorithm)
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
-            new_rocket = Rocket.Rocket(origin, velocity, self.func, self.explode)
+            new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.explode)
+            new_rocket.printroc()
+            thiss = input("Hold")
             self.rockets.append(new_rocket)
 
         ###### LOCAL SEARCH?? #######
@@ -75,7 +84,7 @@ class Swarm(object):
             self.rockets[i].origin = self.rockets[i].pbest
 
 
-    def plot_and_anim():
+    def plot_and_anim(self):
 
         fig, ax = plt.subplots()
         xdata, ydata = [], []
@@ -92,8 +101,6 @@ class Swarm(object):
             ln.set_data(xdata, ydata)
             return ln,
 
-        ani = FuncAnimation(fig, update, frames=np.linspace(0, 2*np.pi, 128),
+        ani = FuncAnimation(fig, update, frames=len(self.X),
                             init_func=init, blit=True)
         plt.show() 
-
-
