@@ -33,7 +33,7 @@ class Swarm(object):
             self.run_rotating(origin)
         else:
 
-            self.run_recursive(origin, self.num_iterations)  
+            self.run_recursive(origin, self.num_iterations, self.num_iterations)  
 
 
 
@@ -61,29 +61,47 @@ class Swarm(object):
             self.rockets = new_rockets
 
 
-    def run_recursive(self, origin, iterations_left):
+    def run_recursive(self, origin, iterations_left, total_iterations):
         if iterations_left == 0:
             return
 
-        if len(rockets) == 0:
-            # first run through
+        if len(self.rockets) == 0:
+            # first run through, build rockets
             for i in range(self.num_rockets):
                 v_min, v_max = utils.vel_min_max(self.func)
                 velocity = np.random.uniform(v_min, v_max, self.dimensions)
-                new_rocket = Rocket(origin, velocity, self.func, self.explode, self.numSparks)
+                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.numSparks)
                 self.rockets.append(new_rocket)
+        # EndIf
 
-            for rocket in rockets:
-                rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
-                if rbestVal < self.gbest:
-                    self.gbest = rbestVal
-        else:
-            
-                for rocket in rockets:
-                    self.rockets[i].launch(self.steps)
-                    self.rockets[i].velocity = np.subtract(rockets[i+1].pbest, self.rockets[i].pbest) * 0.1 #reduce velocity step size
-                    self.rockets[i].origin = self.rockets[i].pbest
+        # Now we launch and record data
+        rbestValLocs = []
+        for rocket in self.rockets:
+            rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
+            if rbestVal < self.gbest:
+                self.gbest = rbestVal
+            rbestValLocs.append((rbestVal, rbestLoc, rocket))
+        orderedRbest = sorted(rbestValLocs, key=lambda x: x[0]) #sort from smallest to largest
 
+        #now we have them ordered, we want the best numRockets/spawn number
+        numSpawn = 4
+        mostPromising = orderedRbest[0:len(orderedRbest)//numSpawn]
+        new_rockets = []
+        next_id = 0
+        for triple in mostPromising:
+            rbestVal,rbestLoc,rocket = triple
+            for i in range(numSpawn):
+                v_min, v_max = utils.vel_min_max(self.func)
+                #TODO: lower v_min and max ranges to encourage convergence
+                velocity = np.random.uniform(v_min, v_max, self.dimensions) * (iterations_left / total_iterations)
+                new_rocket = rocket.spawnNewRocket(velocity, rbestLoc, next_id)
+                new_rockets.append(new_rocket)
+                next_id += 1
+
+        self.rockets = new_rockets
+        return self.run_recursive(origin, iterations_left - 1, total_iterations)
+
+        
 
 
 
