@@ -53,7 +53,7 @@ class Rocket:
 
     def explode(self):
         #We want to spawn particles and have them do some sort of local search
-        for i in range(self.numParticles):
+        for i in range(self.numSparks):
 
             #create particle with random direction starting at pbest.
             v_min, v_max = utils.vel_min_max(self.evalFunc)
@@ -66,7 +66,7 @@ class Rocket:
             self.sparks.append(spark)
 
         for i in range(SPARK_LIFESPAN):
-            for spark in sparks:
+            for spark in self.sparks:
                 spark.localSearchUpdate()
 
         return None
