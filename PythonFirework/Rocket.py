@@ -27,10 +27,12 @@ class Rocket:
         print("id = {0} loc={1} vel={2} pbest={3}".format(self.id, self.loc, self.velocity, self.pbest))
 
     def launch(self, num_steps, x, y, z, returnValues = 0):
-        self.pbestVal = self.evaluate()
+        #self.pbestVal = self.evaluate()
         for i in range(num_steps):
+            self.loc = np.add(self.loc, self.velocity)
+
             val = self.evaluate()
-            if val > self.pbestVal:
+            if val < self.pbestVal:
                 self.pbestVal = val
                 self.pbest = np.array(self.loc)
 
@@ -40,7 +42,7 @@ class Rocket:
                 y.append(self.loc[1])
                 z.append(val)
 
-            self.loc = np.add(self.loc, self.velocity)
+            
 
 
         # now we are at the end of launch
