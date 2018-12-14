@@ -8,7 +8,8 @@ import Swarm
 import Rocket
 import utils
 
-swarm = Swarm.Swarm(num_rockets=4, num_iterations=5, num_steps=5, algorithm=1, annealing=0, dimensions=2, numSparks=5, func=2)
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=5, num_steps=5, algorithm=2, annealing=0, dimensions=2, numSparks=5, func=1)
 
 swarm.run()
+print("Swarm found a global best of ", swarm.gbest)
 swarm.plot_history()

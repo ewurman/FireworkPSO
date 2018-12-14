@@ -64,13 +64,14 @@ class Swarm(object):
     def run_recursive(self, origin, iterations_left, total_iterations):
         if iterations_left == 0:
             return
+        print("Iteration", total_iterations - iterations_left + 1)
 
         if len(self.rockets) == 0:
             # first run through, build rockets
             for i in range(self.num_rockets):
                 v_min, v_max = utils.vel_min_max(self.func)
                 velocity = np.random.uniform(v_min, v_max, self.dimensions)
-                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.numSparks)
+                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks)
                 self.rockets.append(new_rocket)
         # EndIf
 
@@ -83,6 +84,9 @@ class Swarm(object):
             rbestValLocs.append((rbestVal, rbestLoc, rocket))
         orderedRbest = sorted(rbestValLocs, key=lambda x: x[0]) #sort from smallest to largest
 
+        for triple in orderedRbest:
+            print("rbestVal: ", triple[0], " at ", triple[1])
+
         #now we have them ordered, we want the best numRockets/spawn number
         numSpawn = 4
         mostPromising = orderedRbest[0:len(orderedRbest)//numSpawn]
@@ -90,6 +94,7 @@ class Swarm(object):
         next_id = 0
         for triple in mostPromising:
             rbestVal,rbestLoc,rocket = triple
+            print("Spawning from rbestVal: ", rbestVal, " at ", rbestLoc)
             for i in range(numSpawn):
                 v_min, v_max = utils.vel_min_max(self.func)
 
