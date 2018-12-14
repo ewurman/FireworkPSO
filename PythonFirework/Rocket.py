@@ -43,7 +43,7 @@ class Rocket:
 
 
         # now we are at the end of launch
-        self.explode()
+        self.explode(x, y, z)
         # Explode performs local search, we should now either update the rocket's pbest to getRBestSparkLocation() 
         #   and remove the sparks with self.sparks = []
         #  or 
@@ -51,7 +51,7 @@ class Rocket:
         return self.getRBestSparkLocation()
 
 
-    def explode(self):
+    def explode(self, x, y, z):
         #We want to spawn particles and have them do some sort of local search
         for i in range(self.numSparks):
 
@@ -66,8 +66,10 @@ class Rocket:
             self.sparks.append(spark)
 
         for i in range(SPARK_LIFESPAN):
+            print(":OSDFJLLDKSJF:LSDJKF")
+
             for spark in self.sparks:
-                spark.localSearchUpdate()
+                spark.localSearchUpdate(x, y, z)
 
         return None
         

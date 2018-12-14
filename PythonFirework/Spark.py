@@ -20,15 +20,23 @@ class Spark:
         #self.lifespan = lifespan
 
 
-    def localSearchUpdate(self):
+    def localSearchUpdate(self, x, y, z):
         '''
         This is currently implemented as global PSO for a time step
         '''
         
         # position update
+        print("HITHERE")
         np.add(self.loc, self.velocity)
 
         fitness = self.evaluate()
+
+        x.append(self.loc[0])
+        y.append(self.loc[1])
+        z.append(fitness)
+
+        print(x, y, z)
+
         if fitness < self.pbestVal:
             self.pbestVal = fitness
             self.pbest = np.array(self.loc)

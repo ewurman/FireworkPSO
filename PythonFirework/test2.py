@@ -39,11 +39,9 @@ def plot_all_points(x,y,evals):
     c2='#2ca02c' #green
     colors = []
 
-    for val in y:
+    for val in evals:
         col = fadeColor(c1,c2,val/upperbound)
         colors.append(col)
-
-    print(particles)
 
     #x, y = np.array([]), np.array([])
 
@@ -52,7 +50,7 @@ def plot_all_points(x,y,evals):
     xmin, xmax = min(xs), max(xs)
     ymin, ymax = min(ys), max(ys)
     ax = plt.axes(xlim=(xmin, xmax), ylim=(ymin, ymax))
-    pathcol = plt.scatter([], [], c=[], s=100)
+    pathcol = plt.scatter([], [], c=[], s=10)
 
     anim = animation.FuncAnimation(
         fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=500, frames=frames, 
