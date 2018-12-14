@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from playsound import playsound
 
 # test = np.random.uniform(0.0,1.0,(10,4))
 # print(test)
@@ -25,6 +26,9 @@ def plot_all_points(x,y,evals):
         return [pathcol]
 
     def update(i, pathcol, y, particles):
+        if i % 10 == 0:
+            playsound('audio.mp3')
+
         pathcol.set_offsets(particles[:i])
         pathcol.set_color(y[:i])
         return [pathcol]

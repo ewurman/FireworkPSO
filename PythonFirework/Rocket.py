@@ -4,7 +4,7 @@ import numpy as np
 import math
 import Spark
 
-SPARK_LIFESPAN = 20
+SPARK_LIFESPAN = 10
 
 class Rocket:
 
