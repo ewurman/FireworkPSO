@@ -5,12 +5,12 @@ import Rocket
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-V_ADJUST = 10
+V_ADJUST = 5
 
 
 class Swarm(object):
     """docstring for Swarm"""
-    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, numSparks, func):
+    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, dimensions, numSparks, func):
         super(Swarm, self).__init__()
         self.num_rockets = num_rockets
         self.rockets = []
@@ -57,7 +57,7 @@ class Swarm(object):
             self.rockets.append(new_rocket)
 
         for j in range(self.num_iterations):
-            print("Global Best So Far = ", self.gbest)
+            #print("Global Best So Far = ", self.gbest)
             new_rockets = []
             for i in range(len(self.rockets)):
 
@@ -91,7 +91,7 @@ class Swarm(object):
 
         if iterations_left == 0:
             return
-        print("Iteration", total_iterations - iterations_left + 1)
+        #print("Iteration", total_iterations - iterations_left + 1)
 
         if len(self.rockets) == 0:
             # first run through, build rockets
@@ -156,6 +156,6 @@ class Swarm(object):
         return 20 * self.numSparks
 
     def get_num_func_evals(self):
-        return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10))) + self.get_num_func_evals_finale()
+        return self.num_iterations * (self.num_rockets * (self.steps + (self.numSparks * 10))) + self.get_num_func_evals_finale()
 
 
