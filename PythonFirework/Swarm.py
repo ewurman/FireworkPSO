@@ -60,7 +60,7 @@ class Swarm(object):
             self.rockets.append(new_rocket)
 
         for j in range(self.num_iterations):
-            print("Global Best So Far = ", self.gbest)
+            #print("Global Best So Far = ", self.gbest)
             new_rockets = []
             for i in range(len(self.rockets)):
 
