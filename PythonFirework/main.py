@@ -56,8 +56,8 @@ iterations = [100, 65, 50]
 rockets = [8, 12, 16]
 
 
-with open("Results/FPSO_parameterTuning_Results.txt", 'w') as f:
-    for func in [2,3,4]:
+with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
+    #for func in [2,3,4]:
         for alg in [1,2]:
             for i in range(0,3): # which iterations and rocket number we are using
                 f.write("# {0} FPSO on {1} with {2} rockets and {3} iterations \n".format(algorithms[alg], functions[func], rockets[i], iterations[i]))
