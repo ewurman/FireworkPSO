@@ -8,7 +8,7 @@ SPARK_LIFESPAN = 10
 
 class Rocket:
 
-    def __init__(self, ID, origin, velocity, evalFunc, dimensions, numSparks):
+    def __init__(self, ID, origin, velocity, evalFunc, dimensions, numSparks, num_steps):
 
         #want these to be np.array type
         self.id = ID
@@ -21,6 +21,7 @@ class Rocket:
         self.pbestVal = self.evaluate()
         self.sparks = []
         self.dimensions = dimensions
+        self.num_steps = num_steps
 
         
     def printroc(self):
@@ -43,8 +44,6 @@ class Rocket:
                 z.append(val)
 
             
-
-
         # now we are at the end of launch
         self.explode(x, y, z)
         # Explode performs local search, we should now either update the rocket's pbest to getRBestSparkLocation() 
@@ -80,7 +79,7 @@ class Rocket:
 
 
     def spawnNewRocket(self, new_velocity, new_origin, new_id):
-        rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.dimensions, self.numSparks)
+        rocket = Rocket(new_id, new_origin, new_velocity, self.evalFunc, self.dimensions, self.numSparks, self.num_steps)
         return rocket
 
 
@@ -154,3 +153,7 @@ class Rocket:
                 rbestVal = spark.pbestVal
                 rbestLoc = np.array(spark.pbest)
         return (rbestLoc, rbestVal) #(np.array, float) type
+
+    def getRocketFunctionEvals(self):
+        return self.num_steps + (self.numSparks * 10)
+

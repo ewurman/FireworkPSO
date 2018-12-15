@@ -10,7 +10,7 @@ V_ADJUST = 5
 
 class Swarm(object):
     """docstring for Swarm"""
-    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, dimensions, numSparks, func):
+    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, dimensions, numSparks, func, benchmarks):
         super(Swarm, self).__init__()
         self.num_rockets = num_rockets
         self.rockets = []
@@ -26,6 +26,9 @@ class Swarm(object):
         o_min, o_max = utils.loc_min_max(self.func)
         self.gbestLoc = np.random.uniform(o_min, o_max, self.dimensions)
         self.gbest = float("inf")
+        self.gbestEachBenchmark = []
+        self.gbestRecordingCounter = 0
+        self.gbestRecordingBenchmark = benchmarks
 
     def run(self):
 
@@ -53,11 +56,11 @@ class Swarm(object):
             v_min = v_min * V_ADJUST
             v_max = v_max * V_ADJUST 
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
-            new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks)
+            new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks, self.steps)
             self.rockets.append(new_rocket)
 
         for j in range(self.num_iterations):
-            #print("Global Best So Far = ", self.gbest)
+            print("Global Best So Far = ", self.gbest)
             new_rockets = []
             for i in range(len(self.rockets)):
 
@@ -67,6 +70,10 @@ class Swarm(object):
                     self.gbest = rbestVal
                     self.gbestLoc = rbestLoc
 
+                self.gbestRecordingCounter += self.rockets[i].getRocketFunctionEvals()
+                if self.gbestRecordingCounter > self.gbestRecordingBenchmark:
+                    self.gbestEachBenchmark.append(self.gbest)
+                    self.gbestRecordingCounter -= self.gbestRecordingBenchmark
 
                 if i + 1 != self.num_rockets:
                     new_velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * (1.25 / self.steps) #reduce velocity step size
@@ -77,6 +84,7 @@ class Swarm(object):
                 new_rockets.append(new_rocket)
 
             self.rockets = new_rockets
+
 
 
     def run_recursive(self, origin, iterations_left, total_iterations):
@@ -98,7 +106,7 @@ class Swarm(object):
             for i in range(self.num_rockets):
                 v_min, v_max = utils.vel_min_max(self.func)
                 velocity = np.random.uniform(v_min, v_max, self.dimensions)
-                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks)
+                new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks, self.steps)
                 self.rockets.append(new_rocket)
         # EndIf
 
@@ -106,10 +114,18 @@ class Swarm(object):
         rbestValLocs = []
         for rocket in self.rockets:
             rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
+
             if rbestVal < self.gbest:
                 self.gbest = rbestVal
                 self.gbestLoc = rbestLoc
             rbestValLocs.append((rbestVal, rbestLoc, rocket))
+
+            self.gbestRecordingCounter += rocket.getRocketFunctionEvals()
+            if self.gbestRecordingCounter > self.gbestRecordingBenchmark:
+                self.gbestEachBenchmark.append(self.gbest)
+                self.gbestRecordingCounter -= self.gbestRecordingBenchmark
+
+
         orderedRbest = sorted(rbestValLocs, key=lambda x: x[0]) #sort from smallest to largest
 
         '''
@@ -141,12 +157,15 @@ class Swarm(object):
         extraSparkLife = 10
         origin = self.gbestLoc
         vel = np.array([0]*self.dimensions)
-        finaleRocket = Rocket.Rocket(0, origin, vel, self.func, self.dimensions, self.numSparks)
+        finaleRocket = Rocket.Rocket(0, origin, vel, self.func, self.dimensions, self.numSparks, self.steps)
         finaleRocket.explode(x,y,z, extraSparkLife)
         rbestLoc, rbestVal = finaleRocket.getRBestSparkLocationAndValue()
         if rbestVal < self.gbest:
             self.gbest = rbestVal
             self.gbestLoc = rbestLoc
+        #self.gbestRecordingCounter += 2* finaleRocket.getRocketFunctionEvals()
+        self.gbestEachBenchmark.append(self.gbest)
+        #self.gbestRecordingCounter -= self.gbestRecordingBenchmark
 
 
     def plot_history(self):
