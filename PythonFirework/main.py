@@ -65,7 +65,7 @@ with open("Results/FPSO_parameterTuning_Results.txt", 'w') as f:
                 for j in range(0,100): #try it 99 more times
                     swarm = Swarm.Swarm(num_rockets=rockets[i], num_iterations=iterations[i], num_steps=10, algorithm=alg, dimensions=dims, numSparks=sparks, func=func)                
                     swarm.run()
-                    print("Completed trial {} for {} and {}".format(j, functions[func], algorithms[alg]))
+                    print("Completed trial {} for {} and {} with best of {}".format(j, functions[func], algorithms[alg], swarm.gbest))
                     outputLine += str(swarm.gbest) + ","
                 f.write(outputLine[0:-1] + "\n") # take off last comma
 
