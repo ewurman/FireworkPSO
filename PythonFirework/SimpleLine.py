@@ -10,9 +10,8 @@ numEvals2 = [100,200,300,400,500,600,700,800,900,1000]
 
 plt.plot(performance, numEvals)
 plt.plot(performance2, numEvals2)
-
-plt.xlabel('numEvals')
-plt.ylabel('performance')
-plt.title('{} Fireworks Algorithm vs {}'.format("Recursive", "Global PSO"))
+plt.xlabel('Number of Evaluations')
+plt.ylabel('Global Best')
+plt.title('Blo{} Fireworks Algorithm vs {}'.format("Recursive", "Global PSO"))
 plt.grid(True)
 plt.show()
