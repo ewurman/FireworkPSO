@@ -3,14 +3,29 @@ import matplotlib.tri as tri
 import numpy as np
 
 
-iterations =
-sparks =
-sparklife =
-numrockets = 
+# iterations = 50
+# sparks = 30
+# sparklife = 10
+# numrockets = 16
+# steps = 10
+# =248600
+
+# iterations = 100
+# sparks = 30
+# sparklife = 10
+# numrockets = 8
+# steps = 10
+# =248600
+
+
+iterations = 65
+sparks = 30
+sparklife = 10
+numrockets = 12
 steps = 10
 
-sum = iterations * (numrockets *  (steps + (sparks * sparklife)) + )
-
+sums = iterations * (numrockets *  (steps + (sparks * sparklife))) + (20*sparks)
+print(sums)
 # aas=input("asdf")
 
 # performance = [100,100,50,20,20,20,20,18,17,14]

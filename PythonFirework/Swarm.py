@@ -10,7 +10,7 @@ V_ADJUST = 10
 
 class Swarm(object):
     """docstring for Swarm"""
-    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, numSparks, func):
+    def __init__(self, num_rockets, num_iterations, num_steps, algorithm, dimensions, numSparks, func):
         super(Swarm, self).__init__()
         self.num_rockets = num_rockets
         self.rockets = []
