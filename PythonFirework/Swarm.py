@@ -12,7 +12,6 @@ class Swarm(object):
     """docstring for Swarm"""
     def __init__(self, num_rockets, num_iterations, num_steps, algorithm, annealing, dimensions, numSparks, func):
         super(Swarm, self).__init__()
-        self.gbest = float("inf")
         self.num_rockets = num_rockets
         self.rockets = []
         self.num_iterations = num_iterations
@@ -24,17 +23,27 @@ class Swarm(object):
         self.X = []
         self.Y = []
         self.Z = []
+        o_min, o_max = utils.loc_min_max(self.func)
+        self.gbestLoc = np.random.uniform(o_min, o_max, self.dimensions)
+        self.gbest = float("inf")
 
     def run(self):
 
-        o_min, o_max = utils.loc_min_max(self.func)
-        origin = np.random.uniform(o_min, o_max, self.dimensions)
+        origin = self.gbestLoc
+
+        if self.dimensions == 2:
+            self.X.append(origin[0])
+            self.Y.append(origin[1])
+            self.Z.append(0)
+
 
         if self.algorithm == 1:
             self.run_rotating(origin)
         else:
 
             self.run_recursive(origin, self.num_iterations, self.num_iterations)  
+
+        self.finale(self.X, self.Y, self.Z)
 
 
 
@@ -52,10 +61,12 @@ class Swarm(object):
             new_rockets = []
             for i in range(len(self.rockets)):
 
-                rbestLoc = self.rockets[i].launch(self.steps, self.X, self.Y, self.Z)
+                rbestLoc, rbestVal = self.rockets[i].launch(self.steps, self.X, self.Y, self.Z, 2)
 
-                if self.rockets[i].pbestVal < self.gbest:
-                    self.gbest = self.rockets[i].pbestVal
+                if rbestVal < self.gbest:
+                    self.gbest = rbestVal
+                    self.gbestLoc = rbestLoc
+
 
                 if i + 1 != self.num_rockets:
                     new_velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * (1.25 / self.steps) #reduce velocity step size
@@ -69,6 +80,15 @@ class Swarm(object):
 
 
     def run_recursive(self, origin, iterations_left, total_iterations):
+        ''' Has tendency to get stuck in local minimum. Thoughts on how to get out:
+        - random chance to do explosion from spot on path,
+        - Neighborhood PSO in local search instead
+        - Increase the step number?
+        - Decrease the spark number
+        - random restart
+        - Priority Queue for picking next with timing component?
+        '''
+
         if iterations_left == 0:
             return
         print("Iteration", total_iterations - iterations_left + 1)
@@ -88,11 +108,14 @@ class Swarm(object):
             rbestLoc, rbestVal = rocket.launch(self.steps, self.X, self.Y, self.Z, 2) # return loc and val with parameter of 2
             if rbestVal < self.gbest:
                 self.gbest = rbestVal
+                self.gbestLoc = rbestLoc
             rbestValLocs.append((rbestVal, rbestLoc, rocket))
         orderedRbest = sorted(rbestValLocs, key=lambda x: x[0]) #sort from smallest to largest
 
+        '''
         for triple in orderedRbest:
             print("rbestVal: ", triple[0], " at ", triple[1])
+        '''
 
         #now we have them ordered, we want the best numRockets/spawn number
         numSpawn = 4
@@ -101,7 +124,7 @@ class Swarm(object):
         next_id = 0
         for triple in mostPromising:
             rbestVal,rbestLoc,rocket = triple
-            print("Spawning from rbestVal: ", rbestVal, " at ", rbestLoc)
+            #print("Spawning from rbestVal: ", rbestVal, " at ", rbestLoc)
             for i in range(numSpawn):
                 v_min, v_max = utils.vel_min_max(self.func)
 
@@ -113,6 +136,18 @@ class Swarm(object):
         self.rockets = new_rockets
         return self.run_recursive(origin, iterations_left - 1, total_iterations)
 
+
+    def finale(self, x,y,z):
+        extraSparkLife = 10
+        extraSparks = 10
+        origin = self.gbestLoc
+        vel = np.array([0]*self.dimensions)
+        finaleRocket = Rocket.Rocket(0, origin, vel, self.func, self.dimensions, self.numSparks + extraSparks)
+        finaleRocket.explode(x,y,z, extraSparkLife)
+        rbestLoc, rbestVal = finaleRocket.getRBestSparkLocationAndValue()
+        if rbestVal < self.gbest:
+            self.gbest = rbestVal
+            self.gbestLoc = rbestLoc
 
 
     def plot_history(self):

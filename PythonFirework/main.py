@@ -17,8 +17,11 @@ Rastrigin = 4
 Rotating = 1
 Recursive = 2
 
-dims = 30
-swarm = Swarm.Swarm(num_rockets=15, num_iterations=50, num_steps=10, algorithm=Rotating, annealing=0, dimensions=dims, numSparks=30, func=Ackley)
+dims = 2
+sparks = max(dims, 4)
+
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=1, num_steps=10, algorithm=Recursive, annealing=0, dimensions=dims, numSparks=3, func=Ackley)
+
 
 swarm.run()
 print("Swarm found a global best of ", swarm.gbest)

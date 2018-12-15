@@ -59,8 +59,9 @@ class Rocket:
             return self.getRBestSparkLocationAndValue()
 
 
-    def explode(self, x, y, z):
+    def explode(self, x, y, z, extraLifeSpan = 0):
         #We want to spawn particles and have them do some sort of local search
+
         for i in range(self.numSparks):
 
             #create particle with random direction starting at pbest.
@@ -73,7 +74,7 @@ class Rocket:
             #create particle with random direction starting at pbest.
             self.sparks.append(spark)
 
-        for i in range(SPARK_LIFESPAN):
+        for i in range(SPARK_LIFESPAN + extraLifeSpan):
             for spark in self.sparks:
                 spark.localSearchUpdate(x, y, z)
 
@@ -143,7 +144,7 @@ class Rocket:
         for spark in self.sparks:
             if spark.pbestVal < rbestVal:
                 rbestVal = spark.pbestVal
-        return rbestVal #np.array type
+        return rbestVal #float
 
     def getRBestSparkLocationAndValue(self):
         rbestLoc = np.array(self.pbest)
@@ -152,4 +153,4 @@ class Rocket:
             if spark.pbestVal < rbestVal:
                 rbestVal = spark.pbestVal
                 rbestLoc = np.array(spark.pbest)
-        return (rbestLoc, rbestVal) #np.array type
+        return (rbestLoc, rbestVal) #(np.array, float) type
