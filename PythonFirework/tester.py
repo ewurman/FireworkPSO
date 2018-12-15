@@ -73,7 +73,7 @@ def test():
     plt.subplots_adjust(hspace=0.5)
     plt.show()
 
-test()
+#test()
 
 
 

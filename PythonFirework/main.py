@@ -10,8 +10,9 @@ import utils
 
 
 
-dims = 8
-swarm = Swarm.Swarm(num_rockets=32, num_iterations=50, num_steps=25, algorithm=2, annealing=0, dimensions=dims, numSparks=5, func=2)
+dims = 2
+sparks = max(dims, 4)
+swarm = Swarm.Swarm(num_rockets=16, num_iterations=500, num_steps=25, algorithm=2, annealing=0, dimensions=dims, numSparks=sparks, func=3)
 
 swarm.run()
 print("Swarm found a global best of ", swarm.gbest)

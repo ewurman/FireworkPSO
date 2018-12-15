@@ -62,6 +62,15 @@ class Swarm(object):
 
 
     def run_recursive(self, origin, iterations_left, total_iterations):
+        ''' Has tendency to get stuck in local minimum. Thoughts on how to get out:
+        - random chance to do explosion from spot on path,
+        - Neighborhood PSO in local search instead
+        - Increase the step number?
+        - Decrease the spark number
+        - random restart
+        - Priority Queue for picking next with timing component?
+        '''
+
         if iterations_left == 0:
             return
         print("Iteration", total_iterations - iterations_left + 1)
@@ -84,8 +93,12 @@ class Swarm(object):
             rbestValLocs.append((rbestVal, rbestLoc, rocket))
         orderedRbest = sorted(rbestValLocs, key=lambda x: x[0]) #sort from smallest to largest
 
+
+        '''
         for triple in orderedRbest:
             print("rbestVal: ", triple[0], " at ", triple[1])
+        '''
+
 
         #now we have them ordered, we want the best numRockets/spawn number
         numSpawn = 4
@@ -94,7 +107,7 @@ class Swarm(object):
         next_id = 0
         for triple in mostPromising:
             rbestVal,rbestLoc,rocket = triple
-            print("Spawning from rbestVal: ", rbestVal, " at ", rbestLoc)
+            #print("Spawning from rbestVal: ", rbestVal, " at ", rbestLoc)
             for i in range(numSpawn):
                 v_min, v_max = utils.vel_min_max(self.func)
 
