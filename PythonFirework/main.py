@@ -20,7 +20,7 @@ Recursive = 2
 dims = 2
 sparks = max(dims, 4)
 
-swarm = Swarm.Swarm(num_rockets=4, num_iterations=10, num_steps=10, algorithm=Recursive, annealing=0, dimensions=dims, numSparks=3, func=Sphere)
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=10, num_steps=10, algorithm=Recursive, annealing=0, dimensions=dims, numSparks=3, func=Ackley)
 
 
 swarm.run()

@@ -30,6 +30,12 @@ class Swarm(object):
         o_min, o_max = utils.loc_min_max(self.func)
         origin = np.random.uniform(o_min, o_max, self.dimensions)
 
+        if self.dimensions == 2:
+            self.X.append(origin[0])
+            self.Y.append(origin[1])
+            self.Z.append(0)
+
+
         if self.algorithm == 1:
             self.run_rotating(origin)
         else:

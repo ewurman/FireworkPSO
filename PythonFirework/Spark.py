@@ -7,7 +7,7 @@ CONSTRICTION_FACTOR = 0.7298;
 TOWARD_PBEST = 2.05;
 TOWARD_NBEST = 2.05;
 
-plotme = False
+plotme = True
 
 class Spark:
 # DO we need this class?

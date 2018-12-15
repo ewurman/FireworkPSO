@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 from playsound import playsound
 
 SOUND=False
-Greyout=True
+Greyout=False
 Export=False
 
 def fadeColor(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
@@ -24,6 +24,7 @@ def plot_all_points(x,y,evals,numsteps,rockets):
     def init():
         pathcol.set_offsets([[], []])
         ax.axis([-50, 50, -50, 50])
+        plt.plot(x[0], y[0], color='green', marker='o')
         return [pathcol]
 
     def update(i, pathcol, col, particles):
@@ -66,15 +67,20 @@ def plot_all_points(x,y,evals,numsteps,rockets):
     pathcol = plt.scatter([], [], c=[], s=5)
 
     anim = animation.FuncAnimation(
-        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=100, frames=frames, 
+        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=1, frames=frames, 
         blit=False, repeat=False)
 
-    Writer = animation.writers['ffmpeg']
-    writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
     if Export:
+        Writer = animation.writers['ffmpeg']
+        writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
         anim.save('anim2.mp4', writer=writer)
 
+    plt.xlabel('x value')
+    plt.ylabel('y value')
+    plt.title('{} Fireworks Algorithm over {} iterations on Ackley Function'.format("Recursive", "10"))
+    #plt.grid(True)
+    #plt.show()    
     plt.show()
 
 
