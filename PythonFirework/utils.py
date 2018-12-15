@@ -4,7 +4,7 @@ from enum import IntEnum
 
 def loc_min_max(func):
     if func == 1: #sphere
-        return -5.0,5.0
+        return 5.0,10.0
     elif func == 2: #ackley
         return 16.0,32.0
     elif func == 3: #rosebrock
@@ -17,7 +17,7 @@ def vel_min_max(func):
     if func == 1: #sphere
         return -5.0,5.0
     elif func == 2: #ackley
-        return -2.0,4.0
+        return -12.0,14.0
     elif func == 3: #rosebrock
         return -2.0,2.0
     elif func == 4: #ras

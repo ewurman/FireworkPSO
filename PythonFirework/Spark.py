@@ -7,6 +7,8 @@ CONSTRICTION_FACTOR = 0.7298;
 TOWARD_PBEST = 2.05;
 TOWARD_NBEST = 2.05;
 
+plotme = False
+
 class Spark:
 # DO we need this class?
 
@@ -28,9 +30,10 @@ class Spark:
         self.loc =np.add(self.loc, self.velocity)
 
         fitness = self.evaluate()
-        # x.append(self.loc[0])
-        # y.append(self.loc[1])
-        # z.append(fitness)
+        if plotme == True:
+            x.append(self.loc[0])
+            y.append(self.loc[1])
+            z.append(fitness)
 
         if fitness < self.pbestVal:
             self.pbestVal = fitness

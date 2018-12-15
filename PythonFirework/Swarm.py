@@ -1,4 +1,3 @@
-import tester
 import utils
 import plotter
 import numpy as np
@@ -45,10 +44,14 @@ class Swarm(object):
             self.rockets.append(new_rocket)
 
         for j in range(self.num_iterations):
+            print("Global Best So Far = ", self.gbest)
             new_rockets = []
             for i in range(len(self.rockets)):
 
                 rbestLoc = self.rockets[i].launch(self.steps, self.X, self.Y, self.Z)
+
+                if self.rockets[i].pbestVal < self.gbest:
+                    self.gbest = self.rockets[i].pbestVal
 
                 if i + 1 != self.num_rockets:
                     new_velocity = np.subtract(self.rockets[i+1].pbest, self.rockets[i].pbest) * (1.25 / self.steps) #reduce velocity step size
@@ -119,14 +122,11 @@ class Swarm(object):
         self.rockets = new_rockets
         return self.run_recursive(origin, iterations_left - 1, total_iterations)
 
-        
-
-
-
 
 
     def plot_history(self):
-        plotter.plot_all_points(self.X, self.Y, self.Z)
+        plotter.plot_all_points(self.X, self.Y, self.Z, self.steps, self.num_rockets)
 
-    def plot_thing(self):
-        tester.test(self.X, self.Y, self.Z)
+    def get_num_func_evals(self):
+        return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10)))
+
