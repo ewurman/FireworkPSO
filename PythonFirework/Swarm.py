@@ -158,3 +158,4 @@ class Swarm(object):
     def get_num_func_evals(self):
         return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10))) + self.get_num_func_evals_finale()
 
+

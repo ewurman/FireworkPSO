@@ -17,7 +17,7 @@ def vel_min_max(func):
     if func == 1: #sphere
         return -5.0,5.0
     elif func == 2: #ackley
-        return -12.0,14.0
+        return -2.0,4.0
     elif func == 3: #rosebrock
         return -2.0,2.0
     elif func == 4: #ras
