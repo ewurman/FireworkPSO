@@ -14,24 +14,73 @@ Ackley = 2
 Rosenbrock = 3
 Rastrigin = 4
 
+functions = {
+    1: 'Sphere',
+    2: 'Ackley',
+    3: 'Rosenbrock',
+    4: 'Rastrigin'
+}
+
 Rotating = 1
 Recursive = 2
 
+algorithms = {
+    1: 'Rotating',
+    2: 'Recursive'
+}
 
-iterations = 
-rockets = 
-sparks = 
+# iterations = 100
+# sparks = 30
+# sparklife = 10
+# numrockets = 8
+# steps = 10
+# =248600
+
+# iterations = 65
+# sparks = 30
+# sparklife = 10
+# numrockets = 12
+# steps = 10
+
+# iterations = 50
+# sparks = 30
+# sparklife = 10
+# numrockets = 16
+# steps = 10
+# =248600
 
 dims = 30
 sparks = max(dims, 4)
 
+iterations = [100, 65, 50]
+rockets = [8, 12, 16]
 
 
-swarm = Swarm.Swarm(num_rockets=4, num_iterations=1, num_steps=10, algorithm=Recursive, dimensions=dims, numSparks=sparks, func=Ackley)
+with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
+    #for func in [2,3,4]:
+        for alg in [1,2]:
+            for i in range(0,3): # which iterations and rocket number we are using
+                f.write("# {0} FPSO on {1} with {2} rockets and {3} iterations \n".format(algorithms[alg], functions[func], rockets[i], iterations[i]))
+                outputLine = ""
+                for j in range(0,25): #try it 99 more times
+                    swarm = Swarm.Swarm(num_rockets=rockets[i], num_iterations=iterations[i], num_steps=10, algorithm=alg, dimensions=dims, numSparks=sparks, func=func, benchmarks=2500)                
+                    swarm.run()
+                    print("Completed trial {} for {} and {} with best of {}".format(j, functions[func], algorithms[alg], swarm.gbest))
+                    outputLine += str(swarm.gbest) + ","
+                f.write(outputLine[0:-1] + "\n") # take off last comma
+
+
+
+'''
+swarm = Swarm.Swarm(num_rockets=rockets[0], num_iterations=iterations[0], num_steps=10, algorithm=1, dimensions=dims, numSparks=sparks, func=2, benchmarks=2500)                
 swarm.run()
-print("Swarm found a global best of ", swarm.gbest)
-print("NUM EVALS = " ,swarm.get_num_func_evals())
-
+print("gbest History: ", swarm.gbestEachBenchmark)
 
 if dims == 2:
     swarm.plot_history()
+#'''
+
+
+
+
+
