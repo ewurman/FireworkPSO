@@ -139,10 +139,9 @@ class Swarm(object):
 
     def finale(self, x,y,z):
         extraSparkLife = 10
-        extraSparks = 10
         origin = self.gbestLoc
         vel = np.array([0]*self.dimensions)
-        finaleRocket = Rocket.Rocket(0, origin, vel, self.func, self.dimensions, self.numSparks + extraSparks)
+        finaleRocket = Rocket.Rocket(0, origin, vel, self.func, self.dimensions, self.numSparks)
         finaleRocket.explode(x,y,z, extraSparkLife)
         rbestLoc, rbestVal = finaleRocket.getRBestSparkLocationAndValue()
         if rbestVal < self.gbest:
@@ -153,6 +152,9 @@ class Swarm(object):
     def plot_history(self):
         plotter.plot_all_points(self.X, self.Y, self.Z, self.steps, self.num_rockets)
 
+    def get_num_func_evals_finale(self):
+        return 20 * self.numSparks
+
     def get_num_func_evals(self):
-        return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10)))
+        return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10))) + self.get_num_func_evals_finale()
 
