@@ -48,9 +48,9 @@ def plot_all_points(x,y,evals,numsteps,rockets):
     # '#001dff' #blue
     # '#ff0000' #red
     c1='#1f77b4' #blue
-    c2='#2ca02c' #green
+    c2='#ff0000' #red
     colors = []
-    
+
 
     for val in evals:
         col = fadeColor(c1,c2,val/upperbound)

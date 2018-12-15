@@ -5,6 +5,8 @@ import Rocket
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+V_ADJUST = 10
+
 
 class Swarm(object):
     """docstring for Swarm"""
@@ -39,6 +41,8 @@ class Swarm(object):
     def run_rotating(self, origin):
         for i in range(self.num_rockets):
             v_min, v_max = utils.vel_min_max(self.func)
+            v_min = v_min * V_ADJUST
+            v_max = v_max * V_ADJUST 
             velocity = np.random.uniform(v_min, v_max, self.dimensions)
             new_rocket = Rocket.Rocket(i, origin, velocity, self.func, self.dimensions, self.numSparks)
             self.rockets.append(new_rocket)
