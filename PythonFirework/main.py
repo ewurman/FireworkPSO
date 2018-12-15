@@ -55,19 +55,19 @@ sparks = max(dims, 4)
 iterations = [100, 65, 50]
 rockets = [8, 12, 16]
 
-
+func = Ackley
 with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
-    #for func in [2,3,4]:
-        for alg in [1,2]:
-            for i in range(0,3): # which iterations and rocket number we are using
-                f.write("# {0} FPSO on {1} with {2} rockets and {3} iterations \n".format(algorithms[alg], functions[func], rockets[i], iterations[i]))
-                outputLine = ""
-                for j in range(0,25): #try it 99 more times
-                    swarm = Swarm.Swarm(num_rockets=rockets[i], num_iterations=iterations[i], num_steps=10, algorithm=alg, dimensions=dims, numSparks=sparks, func=func, benchmarks=2500)                
-                    swarm.run()
-                    print("Completed trial {} for {} and {} with best of {}".format(j, functions[func], algorithms[alg], swarm.gbest))
-                    outputLine += str(swarm.gbest) + ","
-                f.write(outputLine[0:-1] + "\n") # take off last comma
+    #for func in [2,3,4]: ALSO, change the 
+    for alg in [1,2]:
+        for i in range(0,3): # which iterations and rocket number we are using
+            f.write("# {0} FPSO on {1} with {2} rockets and {3} iterations \n".format(algorithms[alg], func, rockets[i], iterations[i]))
+            outputLine = ""
+            for j in range(0,25): #try it 99 more times
+                swarm = Swarm.Swarm(num_rockets=rockets[i], num_iterations=iterations[i], num_steps=10, algorithm=alg, dimensions=dims, numSparks=sparks, func=func, benchmarks=2500)                
+                swarm.run()
+                print("Completed trial {} for {} and {} with best of {}".format(j, functions[func], algorithms[alg], swarm.gbest))
+                outputLine += str(swarm.gbest) + ","
+            f.write(outputLine[0:-1] + "\n") # take off last comma
 
 
 
