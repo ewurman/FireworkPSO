@@ -119,5 +119,5 @@ class Swarm(object):
         plotter.plot_all_points(self.X, self.Y, self.Z, self.steps, self.num_rockets)
 
     def get_num_func_evals(self):
-        return self.num_iterations * (self.numRockets * (self.num_steps + (self.numSparks * 10)))
+        return self.num_iterations * (self.num_rockets * (self.steps + (self.numSparks * 10)))
 

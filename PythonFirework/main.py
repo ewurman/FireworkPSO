@@ -18,10 +18,10 @@ Rotating = 1
 Recursive = 2
 
 dims = 30
-swarm = Swarm.Swarm(num_rockets=32, num_iterations=50, num_steps=10, algorithm=Rotating, annealing=0, dimensions=dims, numSparks=3, func=Rastrigin)
+swarm = Swarm.Swarm(num_rockets=15, num_iterations=50, num_steps=10, algorithm=Rotating, annealing=0, dimensions=dims, numSparks=30, func=Ackley)
 
 swarm.run()
 print("Swarm found a global best of ", swarm.gbest)
-
+print("NUM EVALS = " ,swarm.get_num_func_evals())
 if dims == 2:
     swarm.plot_history()
