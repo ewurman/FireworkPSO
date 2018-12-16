@@ -5,7 +5,7 @@ import Rocket
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-V_ADJUST = 5
+V_ADJUST = 10
 
 
 class Swarm(object):
@@ -29,6 +29,7 @@ class Swarm(object):
         self.gbestEachBenchmark = []
         self.gbestRecordingCounter = 0
         self.gbestRecordingBenchmark = benchmarks
+        self.newthing = []
 
     def run(self):
 
@@ -84,6 +85,8 @@ class Swarm(object):
                 new_rockets.append(new_rocket)
 
             self.rockets = new_rockets
+
+            self.newthing.append(self.gbest)
 
 
 
@@ -176,5 +179,30 @@ class Swarm(object):
 
     def get_num_func_evals(self):
         return self.num_iterations * (self.num_rockets * (self.steps + (self.numSparks * 10))) + self.get_num_func_evals_finale()
+
+
+    def getgbestEachBenchmark(self, num_datapoints):
+        print("Total evals" , len(self.Z))
+
+        step = len(self.Z) // num_datapoints
+        print("steps = ", step)
+
+        x=[]
+
+        for i in range(num_datapoints):
+            print(self.Z[i*step],end=",")
+            x.append(i*step)
+        print(self.Z[len(self.Z)-1])
+
+        print("\n evals \n")
+
+        for i in range(len(x)):
+            print(x[i],end=",")
+        print(len(self.Z))
+
+
+        print("\n\n\n \n")
+        print(self.Z)
+
 
 

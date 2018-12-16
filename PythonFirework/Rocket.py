@@ -38,10 +38,10 @@ class Rocket:
                 self.pbest = np.array(self.loc)
 
 
-            if self.loc.size == 2:
-                x.append(self.loc[0])
-                y.append(self.loc[1])
-                z.append(val)
+        
+            x.append(self.loc[0])
+            y.append(self.loc[1])
+            z.append(val)
 
             
         # now we are at the end of launch
@@ -85,6 +85,7 @@ class Rocket:
 
 
     def evaluate(self):
+
         if self.evalFunc == utils.Function.Sphere:
             return self.evaluateSphere()
 
