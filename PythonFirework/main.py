@@ -74,9 +74,9 @@ with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
 
 '''
 #swarm = Swarm.Swarm(num_rockets=rockets[0], num_iterations=iterations[0], num_steps=10, algorithm=1, dimensions=dims, numSparks=sparks, func=2, benchmarks=2500)
-dims = 30
-sparks = 30
-swarm = Swarm.Swarm(num_rockets=16, num_iterations=50, num_steps=10, algorithm=Rotating, dimensions=dims, numSparks=sparks, func=4, benchmarks=250)
+dims = 2
+sparks = 3
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=10, num_steps=10, algorithm=Rotating, dimensions=dims, numSparks=sparks, func=2, benchmarks=250)
 print(swarm.get_num_func_evals())
 swarm.run()
 print("gbest History: ", swarm.gbest)

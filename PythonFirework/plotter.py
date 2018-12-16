@@ -5,7 +5,7 @@ from playsound import playsound
 
 SOUND=False
 Greyout=False
-Export=False
+Export=True
 
 def fadeColor(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0) to c2 (mix=1)
     assert len(c1)==len(c2)
@@ -67,14 +67,14 @@ def plot_all_points(x,y,evals,numsteps,rockets):
     pathcol = plt.scatter([], [], c=[], s=5)
 
     anim = animation.FuncAnimation(
-        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=1, frames=frames, 
+        fig, update, init_func=init, fargs=(pathcol, colors, particles), interval=10, frames=frames, 
         blit=False, repeat=False)
 
 
     if Export:
         Writer = animation.writers['ffmpeg']
         writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-        anim.save('anim2.mp4', writer=writer)
+        anim.save('Rot.mp4', writer=writer)
 
     plt.xlabel('x value')
     plt.ylabel('y value')

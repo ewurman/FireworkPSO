@@ -5,7 +5,7 @@ import Rocket
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-V_ADJUST = 1
+V_ADJUST = 5
 
 
 class Swarm(object):
