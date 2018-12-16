@@ -55,8 +55,8 @@ sparks = max(dims, 4)
 iterations = [100, 65, 50]
 rockets = [8, 12, 16]
 
-func = Ackley
-with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
+func = Rastrigin
+with open("Results/FPSO_parameterTuning_Results_Rastrigin.txt", 'w') as f:
     #for func in [2,3,4]: ALSO, change the 
     for alg in [1,2]:
         for i in range(0,3): # which iterations and rocket number we are using
