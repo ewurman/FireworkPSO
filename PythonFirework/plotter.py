@@ -78,7 +78,7 @@ def plot_all_points(x,y,evals,numsteps,rockets):
 
     plt.xlabel('x value')
     plt.ylabel('y value')
-    plt.title('{} Fireworks Algorithm over {} iterations on Ackley Function'.format("Recursive", "10"))
+    plt.title('{} Fireworks Algorithm over {} iterations on Ackley Function'.format("Rotating", "10"))
     #plt.grid(True)
     #plt.show()    
     plt.show()

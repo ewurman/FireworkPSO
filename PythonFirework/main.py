@@ -55,6 +55,7 @@ sparks = max(dims, 4)
 iterations = [100, 65, 50]
 rockets = [8, 12, 16]
 
+'''
 func = Ackley
 with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
     #for func in [2,3,4]: ALSO, change the 
@@ -72,7 +73,10 @@ with open("Results/FPSO_parameterTuning_Results_Ackley.txt", 'w') as f:
 
 
 '''
-swarm = Swarm.Swarm(num_rockets=rockets[0], num_iterations=iterations[0], num_steps=10, algorithm=1, dimensions=dims, numSparks=sparks, func=2, benchmarks=2500)                
+#swarm = Swarm.Swarm(num_rockets=rockets[0], num_iterations=iterations[0], num_steps=10, algorithm=1, dimensions=dims, numSparks=sparks, func=2, benchmarks=2500)
+dims = 2
+sparks = 5
+swarm = Swarm.Swarm(num_rockets=4, num_iterations=5, num_steps=10, algorithm=Rotating, dimensions=dims, numSparks=sparks, func=2, benchmarks=2500)
 swarm.run()
 print("gbest History: ", swarm.gbestEachBenchmark)
 
