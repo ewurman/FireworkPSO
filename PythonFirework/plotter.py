@@ -74,11 +74,11 @@ def plot_all_points(x,y,evals,numsteps,rockets):
     if Export:
         Writer = animation.writers['ffmpeg']
         writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-        anim.save('Rot.mp4', writer=writer)
+        anim.save('Rec.mp4', writer=writer)
 
     plt.xlabel('x value')
     plt.ylabel('y value')
-    plt.title('{} Fireworks Algorithm over {} iterations on Ackley Function'.format("Rotating", "10"))
+    plt.title('{} Fireworks Algorithm over {} iterations on Ackley Function'.format("Recursive", "10"))
     #plt.grid(True)
     #plt.show()    
     plt.show()
